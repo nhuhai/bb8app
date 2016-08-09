@@ -1,0 +1,3 @@
+rootProject.name = 'BB8App'
+
+include ':app'
