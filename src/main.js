@@ -1,0 +1,48 @@
+import React, { Component } from 'react';
+import { View, Navigator, StyleSheet, StatusBar } from 'react-native';
+import SignIn from './components/authentication/signin';
+import SignUp from './components/authentication/signup';
+import Menu from './components/menu/menu';
+
+const ROUTES = {
+  signin: SignIn,
+  signup: SignUp,
+  menu: Menu
+};
+
+class Main extends Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <StatusBar hidden={true} />
+        <Navigator
+          ref='navigator'
+          style={styles.navigator}
+          initialRoute={{name: 'signin'}}
+          renderScene={this.renderScene}
+          configureScene={() => { return Navigator.SceneConfigs.FloatFromRight; }}
+          onDidFocus={(route) => {
+            if (route.reset) {
+              this.refs.navigator.immediatelyResetRouteStack([{ name: route.name }])
+            }
+          }}
+          />
+      </View>
+    );
+  }
+
+  renderScene(route, navigator) {
+    const Component = ROUTES[route.name];
+    return <Component route={route} navigator={navigator} />;
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  navigator: {
+    flex: 1
+  }
+})
+module.exports = Main;
