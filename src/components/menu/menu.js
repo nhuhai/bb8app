@@ -2,46 +2,64 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
-  StyleSheet
+  StyleSheet,
+  Navigator
 } from 'react-native';
 import Categories from './categories';
+import dotSaigonMenu from '../../data/dot-saigon-menu';
+import Items from './items';
 
-const categories = [
-  {
-    label: 'Banh Mi',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/B%C3%A1nh_m%C3%AC_th%E1%BB%8Bt_n%C6%B0%E1%BB%9Bng.png'
-  },
-  {
-    label: 'Noodle Salad',
-    image: 'http://4.bp.blogspot.com/-ocSjuJNh9Xs/TjisRBBh0II/AAAAAAAABFY/P9hsMibCGYI/s1600/IMG_1927.JPG'
-  },
-  {
-    label: 'Pho',
-    image: 'http://dx9rjq5h30myv.cloudfront.net/wp-content/uploads/2012/02/pho_chin.jpg'
-  },
-  {
-    label: 'Rolls',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e9/Spring_rolls_with_peanut_sauce.jpg'
-  },
-  {
-    label: 'Drinks',
-    image: 'https://franhayden.files.wordpress.com/2016/07/cocktails.png'
-  }
-];
+const ROUTES = {
+  items: Items
+};
 
 class Menu extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedCategoryIndex: 0
+    };
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.categories}>
-          <Categories categories={categories} />
+          <Categories
+            categories={dotSaigonMenu.categories}
+            selectedCategoryIndex={this.state.selectedCategoryIndex}
+            onSelectCategory={this.onSelectCategory.bind(this)}/>
         </View>
 
-        <View style={styles.categoryDetail}>
-          <Text>Category Detail</Text>
-        </View>
+        <Navigator
+          ref='navigator'
+          style={styles.categoryDetail}
+          initialRoute={{name: 'items'}}
+          renderScene={this.renderScene.bind(this)}
+          configureScene={() => { return Navigator.SceneConfigs.FloatFromRight; }}
+          onDidFocus={(route) => {
+            if (route.reset) {
+              this.refs.navigator.immediatelyResetRouteStack([{ name: route.name }])
+            }
+          }}
+          />
       </View>
     );
+  }
+
+  renderScene(route, navigator) {
+    const Component = ROUTES[route.name];
+    return (
+      <Component
+        route={route}
+        navigator={navigator}
+        category={dotSaigonMenu.categories[this.state.selectedCategoryIndex]}/>
+    );
+  }
+
+  onSelectCategory(index) {
+    console.log('onSelectCategory -- index: ' + index);
+    this.setState({ selectedCategoryIndex: index });
   }
 }
 
@@ -53,12 +71,10 @@ const styles = StyleSheet.create({
 
   categories: {
     flex: 1,
-    paddingTop: 20
   },
 
   categoryDetail: {
-    flex: 5,
-    flexDirection: 'row',
+    flex: 5
   },
 });
 

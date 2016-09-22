@@ -6,24 +6,28 @@ class Categories extends Component {
   render() {
     return (
       <ScrollView contentContainerStyle={styles.categories}>
-        {this.props.categories.map(this.renderCategory)}
+        {this.props.categories.map((category, index) => {
+          return this.renderCategory(category, index)
+        })}
       </ScrollView>
     );
   }
 
-  renderCategory(category) {
+  renderCategory(category, index) {
     return (
-      <Category key={category.label} category={category} />
+      <Category
+        key={category.label}
+        category={category}
+        index={index}
+        selectedCategoryIndex={this.props.selectedCategoryIndex}
+        onSelectCategory={this.props.onSelectCategory}/>
     );
   }
 }
 
 const styles = StyleSheet.create({
   categories: {
-    flex: 1,
-    flexDirection: 'column',
-    borderRightWidth: 1,
-    borderRightColor: 'orange'
+    flex: 1
   }
 });
 
