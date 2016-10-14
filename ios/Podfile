@@ -1,0 +1,3 @@
+target 'BB8App' do
+  pod 'PayPalHereSDK', :path => '../'
+end
