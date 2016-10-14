@@ -3,7 +3,9 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput
+  TextInput,
+  NativeModules,
+  Linking
 } from 'react-native';
 import Button from '../common/button';
 
@@ -15,6 +17,23 @@ class SignIn extends Component {
       password: '',
       errorMessage: ''
     }
+  }
+
+  componentDidMount() {
+    var url = Linking.getInitialURL().then((url) => {
+      if (url) {
+        console.log('Initial url is: ' + url);
+      }
+    }).catch(err => console.error('An error occurred', err));
+
+    Linking.addEventListener('url', this._handleOpenURL);
+
+    NativeModules.PayPalHereSDKBridge.showImage()
+  }
+
+  _handleOpenURL(event) {
+    console.log('access token');
+    console.log(event.url);
   }
 
   render() {
@@ -45,6 +64,16 @@ class SignIn extends Component {
   }
 
   onSigninPress() {
+    var paypalLoginUrl = 'http://paypal-retail-node.herokuapp.com/toPayPal/sandbox';
+
+    Linking.canOpenURL(paypalLoginUrl).then(supported => {
+      if (supported) {
+        Linking.openURL(paypalLoginUrl);
+      } else {
+        console.log('Don\'t know how to open URI: ' + paypalLoginUrl);
+      }
+    });
+
     if (this.state.username.toLowerCase() === 'dotsaigon' && this.state.password === '1234') {
       console.log('sign in successfully');
       this.setState({errorMessage: ''});
