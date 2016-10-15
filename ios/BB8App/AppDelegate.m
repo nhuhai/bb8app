@@ -8,6 +8,7 @@
  */
 
 #import "AppDelegate.h"
+#import <PayPalHereSDK/PayPalHereSDK.h>
 
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
@@ -17,6 +18,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [PayPalHereSDK askForLocationAccess];
+
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
@@ -39,8 +42,8 @@
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
   if ([url.scheme isEqualToString:@"retailsdksampleapp"]) {
-    NSString *token = url.query;
-    NSString *decoded = [token stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    NSString *token = url.query;
+//    NSString *decoded = [token stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     return [RCTLinkingManager application:application openURL:url
                         sourceApplication:sourceApplication annotation:annotation];

@@ -17,7 +17,7 @@
   "requires_arc": true,
   "xcconfig": {
     "FRAMEWORK_SEARCH_PATHS": "$(inherited)",
-    "OTHER_LDFLAGS": "$(inherited) -lstdc++ -stdlib=libc++ -ObjC"
+    "OTHER_LDFLAGS": "$(inherited) -lstdc++ -stdlib=libstdc++ -ObjC -lc++"
   },
   "ios": {
     "libraries": [

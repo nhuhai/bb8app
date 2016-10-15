@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
 
   s.xcconfig = {
     'FRAMEWORK_SEARCH_PATHS' => '$(inherited)',
-    'OTHER_LDFLAGS' => '$(inherited) -lstdc++ -stdlib=libc++ -ObjC',
+    'OTHER_LDFLAGS' => '$(inherited) -lstdc++ -stdlib=libstdc++ -ObjC -lc++',
   }
 
   s.ios.libraries = 'sqlite3', 'z', 'xml2'
