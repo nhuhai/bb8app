@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { View, Navigator, StyleSheet, StatusBar } from 'react-native';
 import SignIn from './components/authentication/signin';
 import SignUp from './components/authentication/signup';
+import AuthorizePayPal from './components/authentication/authorize-paypal';
 import Menu from './components/menu/menu';
 
 const ROUTES = {
   signin: SignIn,
   signup: SignUp,
+  authorizePayPal: AuthorizePayPal,
   menu: Menu
 };
 

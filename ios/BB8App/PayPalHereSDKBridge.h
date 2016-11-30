@@ -6,9 +6,10 @@
 //  Copyright © 2016 BB8. All rights reserved.
 //
 
+#import <UIKit/UIkit.h>
 #import <Foundation/Foundation.h>
 #import "RCTBridgeModule.h"
 
-@interface PayPalHereSDKBridge : NSObject <RCTBridgeModule>
+@interface PayPalHereSDKBridge : UIViewController <RCTBridgeModule>
 
 @end

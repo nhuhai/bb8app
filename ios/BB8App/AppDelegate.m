@@ -19,6 +19,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [PayPalHereSDK askForLocationAccess];
+  [PayPalHereSDK selectEnvironmentWithType:ePPHSDKServiceType_Sandbox];
 
   NSURL *jsCodeLocation;
 
@@ -44,11 +45,11 @@
   if ([url.scheme isEqualToString:@"retailsdksampleapp"]) {
 //    NSString *token = url.query;
 //    NSString *decoded = [token stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
+
     return [RCTLinkingManager application:application openURL:url
                         sourceApplication:sourceApplication annotation:annotation];
   }
-  
+
   return  YES;
 }
 

@@ -3,7 +3,9 @@ import {
   Text,
   View,
   StyleSheet,
-  Navigator
+  Navigator,
+  NativeModules,
+  NativeAppEventEmitter
 } from 'react-native';
 import Categories from './categories';
 import dotSaigonMenu from '../../data/dot-saigon-menu';
@@ -17,8 +19,37 @@ class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedCategoryIndex: 0
+      selectedCategoryIndex: 0,
+      cardReaderStatus: 'Card Reader Status: '
     };
+
+    this.subscription = NativeAppEventEmitter.addListener(
+      'CardReaderStatus',
+      (readerStatus) => {
+        // No Reader Found!
+        // Audio Jack Reader Connected!
+        console.log('>>> BB8 - RCT - Card Reader Status:' + readerStatus.message);
+        this.setState({ cardReaderStatus: readerStatus.message});
+      }
+    );
+
+    this.subscription1 = NativeAppEventEmitter.addListener(
+      'ePPHTransactionType_CardDataReceived',
+      () => {
+        console.log('>>> BB8 - RCT - ePPHTransactionType_CardDataReceived:');
+        NativeModules.PayPalHereSDKBridge.processPaymentWithPaymentType();
+      }
+    );
+  }
+
+  componentDidMount() {
+    console.log('menu componentDidMount');
+    NativeModules.PayPalHereSDKBridge.clearAnyExistingInfo();
+  }
+
+  componentWillUnmount() {
+    this.subscription.remove();
+    this.subscription1.remove();
   }
 
   render() {
@@ -30,6 +61,8 @@ class Menu extends Component {
             selectedCategoryIndex={this.state.selectedCategoryIndex}
             onSelectCategory={this.onSelectCategory.bind(this)}/>
         </View>
+
+        <Text style={styles.label}>'Card Reader Status: '{this.state.cardReaderStatus}</Text>
 
         <Navigator
           ref='navigator'

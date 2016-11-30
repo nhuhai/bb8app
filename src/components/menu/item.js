@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, Text, TouchableHighlight, Modal, TextInput } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  Text,
+  TouchableHighlight,
+  Modal,
+  TextInput,
+  NativeModules,
+  NativeAppEventEmitter
+} from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import CheckBox from 'react-native-checkbox';
 
@@ -18,7 +28,7 @@ class Item extends Component {
       modalVisible: false,
       value: 0,
       text: ''
-    }
+    };
   }
 
   render() {
@@ -63,7 +73,7 @@ class Item extends Component {
                 placeholder={'Special Instructions (Optional)'}
               />
 
-              <Button text={'Add to Cart'} onPress={() => {this._addToCart()}} />
+              <Button text={'Pay'} onPress={() => {this._pay()}} />
               <Button text={'Cancel'} onPress={this._setModalVisible.bind(this, false)} />
             </View>
           </View>
@@ -88,9 +98,12 @@ class Item extends Component {
     this._setModalVisible(true);
   }
 
-  _addToCart() {
-    console.log('_addToCart');
+  _pay() {
+    console.log('>>> BB8 - RCT: _pay or setupSimpleInvoice');
     this._setModalVisible(false);
+
+    // NativeModules.PayPalHereSDKBridge.clearAnyExistingInfo();
+    NativeModules.PayPalHereSDKBridge.setupSimpleInvoice();
   }
 
   _setModalVisible = (visible) => {
