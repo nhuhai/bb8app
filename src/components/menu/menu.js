@@ -40,7 +40,7 @@ class Menu extends Component {
   }
 
   _onBackButtonPressed() {
-    this.props.navigator.push({name: 'welcomePage'});
+    this.props.navigator.push({name: 'welcomePage', isGoingBack: true});
   }
 
   onSelectCategory(index) {

@@ -24,7 +24,14 @@ class Main extends Component {
           style={styles.navigator}
           initialRoute={{name: 'welcomePage'}}
           renderScene={this.renderScene}
-          configureScene={() => { return Navigator.SceneConfigs.FloatFromRight; }}
+          configureScene={(route) => {
+              if (route.isGoingBack) {
+                return Navigator.SceneConfigs.FloatFromLeft;
+              } else {
+                return Navigator.SceneConfigs.FloatFromRight;
+              }
+            }
+          }
           onDidFocus={(route) => {
             if (route.reset) {
               this.refs.navigator.immediatelyResetRouteStack([{ name: route.name }])
