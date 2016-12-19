@@ -4,11 +4,13 @@ import SignIn from './components/authentication/signin';
 import SignUp from './components/authentication/signup';
 import AuthorizePayPal from './components/authentication/authorize-paypal';
 import Menu from './components/menu/menu';
+import WelcomePage from './components/menu/welcome-page';
 
 const ROUTES = {
   signin: SignIn,
   signup: SignUp,
   authorizePayPal: AuthorizePayPal,
+  welcomePage: WelcomePage,
   menu: Menu
 };
 
@@ -20,7 +22,7 @@ class Main extends Component {
         <Navigator
           ref='navigator'
           style={styles.navigator}
-          initialRoute={{name: 'signin'}}
+          initialRoute={{name: 'welcomePage'}}
           renderScene={this.renderScene}
           configureScene={() => { return Navigator.SceneConfigs.FloatFromRight; }}
           onDidFocus={(route) => {
