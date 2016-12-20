@@ -8,7 +8,7 @@ import {
   Linking,
   Image
 } from 'react-native';
-import Button from 'react-native-button'
+import Button from 'react-native-button';
 
 class WelcomePage extends Component {
   constructor(props) {
