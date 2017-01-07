@@ -31,7 +31,9 @@ class Menu extends Component {
     this.state = {
       modalVisible: false,
       width: null,
-      height: null
+      height: null,
+      selectedItem: null,
+      selectedCategoryIndex: null
     };
   }
 
@@ -68,52 +70,98 @@ class Menu extends Component {
   }
 
   _renderModalContent() {
-    return (
-      <View
-        style={styles.modal}>
+    console.log('_renderModalContent');
+    const item = this.state.selectedItem;
+
+    if (item) {
+      return (
         <View
-          width={this.state.width * 0.9}
-          height={this.state.height * 0.9}
-          style={styles.modalContent}>
+          style={styles.modal}>
+          <View
+            width={this.state.width * 0.9}
+            height={this.state.height * 0.9}
+            style={styles.modalContent}>
 
-          <View style={styles.modalContentMain}>
-            <Text>Sauce Selection</Text>
-          </View>
+            {this._renderModalContentMain(item)}
 
-          <View style={styles.modalContentBottomButtons}>
-            <Button
-              containerStyle={{padding:10, height:50, width: 200, margin: 30, overflow:'hidden', borderRadius:4, backgroundColor: 'red'}}
-              style={{fontSize: 25, color: 'white'}}
-              styleDisabled={{color: 'red'}}
-              onPress={this._setModalVisible.bind(this, false)}>
-              Cancel
-            </Button>
-
-            <Button
-              containerStyle={{padding:10, height:50, width: 200, margin: 30, overflow:'hidden', borderRadius:4, backgroundColor: 'blue'}}
-              style={{fontSize: 25, color: 'white'}}
-              styleDisabled={{color: 'red'}}
-              onPress={() => {this._addToCart()}}>
-              Add to Cart
-            </Button>
+            {this._renderModalContentBottomButtons()}
           </View>
         </View>
-      </View>
-    );
+      );
+    }
   }
 
   _addToCart() {
     console.log('_addToCart');
   }
 
+  _renderModalContentMain(item) {
+    const selectedIndex = this.state.selectedCategoryIndex;
+    const customization = dotSaigonMenu.categories[selectedIndex].customization;
+
+    console.log(customization);
+
+    return (
+      <View style={styles.modalContentMain}>
+        <View style={styles.modalContentMainHeader}>
+          <Text style={styles.modalContentMainHeaderText}>Customize your {item.label}</Text>
+        </View>
+
+        {this._renderCustomizationCategories(customization)}
+      </View>
+    );
+  }
+
+  _renderCustomizationCategories(customization) {
+    if (customization) {
+      return (
+        <View style={styles.modalContentMainScrollView}>
+          {customization.map((category, index) => {
+            return this._renderCustomizationCategory(category, index);
+          })}
+        </View>
+      );
+    }
+  }
+
+  _renderCustomizationCategory(category, index) {
+    return (
+      <View key={index}>
+        <Text>{category.label}</Text>
+      </View>
+    );
+  }
+
+  _renderModalContentBottomButtons() {
+    return (
+      <View style={styles.modalContentBottomButtons}>
+        <Button
+          containerStyle={{padding:10, height:50, width: 200, margin: 30, overflow:'hidden', borderRadius:4, backgroundColor: 'red'}}
+          style={{fontSize: 25, color: 'white'}}
+          styleDisabled={{color: 'red'}}
+          onPress={this._setModalVisible.bind(this, false)}>
+          Cancel
+        </Button>
+
+        <Button
+          containerStyle={{padding:10, height:50, width: 200, margin: 30, overflow:'hidden', borderRadius:4, backgroundColor: 'blue'}}
+          style={{fontSize: 25, color: 'white'}}
+          styleDisabled={{color: 'red'}}
+          onPress={() => {this._addToCart()}}>
+          Add to Cart
+        </Button>
+      </View>
+    );
+  }
+
   _renderScrollableTabView() {
     return(
       <View style={styles.categories}>
         <ScrollableTabView
-          style={{marginTop: 20, }}
+          style={{marginTop: 20}}
           initialPage={0}
           renderTabBar={() => <FacebookTabBar />}
-          >
+          onChangeTab={(selectedTab) => this.setState({selectedCategoryIndex: selectedTab.i})}>
 
           {dotSaigonMenu.categories.map((category, index) => {
             return this._renderCategory(category, index);
@@ -198,6 +246,11 @@ class Menu extends Component {
   _onSelectItem(item) {
     console.log('_onSelectItem');
     console.log(item);
+
+    this.setState({
+      selectedItem: item
+    });
+
     this._setModalVisible(true);
   }
 
@@ -317,6 +370,20 @@ const styles = StyleSheet.create({
   modalContentBottomButtons: {
     flex: 1,
     flexDirection: 'row'
+  },
+
+  modalContentMainHeader: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
+  modalContentMainScrollView: {
+    flex: 6
+  },
+
+  modalContentMainHeaderText: {
+    fontSize: 25
   }
 });
 

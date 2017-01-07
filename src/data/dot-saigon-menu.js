@@ -39,13 +39,13 @@ export default {
           "selections": [
             {
               "label": "Cucumber",
-              "selected": false,
+              "selected": true,
               "image": require('../images/customization/cucumber.jpg'),
               "price": 0
             },
             {
               "label": "Carrot",
-              "selected": false,
+              "selected": true,
               "image": require('../images/customization/carrot.jpg'),
               "price": 0
             },
@@ -57,14 +57,43 @@ export default {
             },
             {
               "label": "Cilantro",
-              "selected": false,
+              "selected": true,
               "image": require('../images/customization/cilantro.jpg'),
               "price": 0
             },
             {
               "label": "Fried Shallot",
-              "selected": false,
+              "selected": true,
               "image": require('../images/customization/fried-shallot.jpg'),
+              "price": 0
+            }
+          ]
+        },
+        {
+          "label": "Dressing",
+          "selections": [
+            {
+              "label": "Peanut Sauce",
+              "selected": false,
+              "image": require('../images/customization/peanut-sauce.jpg'),
+              "price": 0
+            },
+            {
+              "label": "Cilantro creme",
+              "selected": true,
+              "image": require('../images/customization/cilantro-creme.jpg'),
+              "price": 0
+            },
+            {
+              "label": "Mayo",
+              "selected": false,
+              "image": require('../images/customization/mayo.jpg'),
+              "price": 0
+            },
+            {
+              "label": "Pate",
+              "selected": false,
+              "image": require('../images/customization/pate.jpg'),
               "price": 0
             }
           ]
