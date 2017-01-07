@@ -32,6 +32,43 @@ export default {
           "description": "Served with prawn chips, pork pate, mayo, cucumber, pickle, jalapeño, cilantro, & choice of house sauces.",
           "image": require('../images/banh-mi/bm-tofu.jpg')
         }
+      ],
+      "customization": [
+        {
+          "label": "Vegetable",
+          "selections": [
+            {
+              "label": "Cucumber",
+              "selected": false,
+              "image": require('../images/customization/cucumber.jpg'),
+              "price": 0
+            },
+            {
+              "label": "Carrot",
+              "selected": false,
+              "image": require('../images/customization/carrot.jpg'),
+              "price": 0
+            },
+            {
+              "label": "Jalapeno",
+              "selected": true,
+              "image": require('../images/customization/jalapeno.jpg'),
+              "price": 0
+            },
+            {
+              "label": "Cilantro",
+              "selected": false,
+              "image": require('../images/customization/cilantro.jpg'),
+              "price": 0
+            },
+            {
+              "label": "Fried Shallot",
+              "selected": false,
+              "image": require('../images/customization/fried-shallot.jpg'),
+              "price": 0
+            }
+          ]
+        }
       ]
     },
     {

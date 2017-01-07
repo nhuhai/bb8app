@@ -8,7 +8,9 @@ import {
   NativeAppEventEmitter,
   ScrollView,
   Image,
-  Platform
+  Platform,
+  TouchableOpacity,
+  Modal
 } from 'react-native';
 import Categories from './categories';
 import dotSaigonMenu from '../../data/dot-saigon-menu';
@@ -23,24 +25,85 @@ const ROUTES = {
   items: Items
 };
 
-
 class Menu extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      modalVisible: false,
+      width: null,
+      height: null
+    };
   }
 
   componentDidMount() {
     console.log('menu componentDidMount');
+    setTimeout(this.measureSwiper);
   }
+
+  storeSwiperLayout = (ox, oy, width, height, px, py) => {
+    this.setState({ width: width, height: height })
+    console.log('width: ' + width);
+    console.log('height: ' + height);
+  }
+
+  measureSwiper = () => this.refs.container.measure(this.storeSwiperLayout);
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} ref="container">
         {this._renderScrollableTabView()}
 
         {this._renderBottomButtons()}
+
+        <Modal
+          animationType={'fade'}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {this._setModalVisible(false)}}
+          >
+          {this._renderModalContent()}
+        </Modal>
       </View>
     );
+  }
+
+  _renderModalContent() {
+    return (
+      <View
+        style={styles.modal}>
+        <View
+          width={this.state.width * 0.9}
+          height={this.state.height * 0.9}
+          style={styles.modalContent}>
+
+          <View style={styles.modalContentMain}>
+            <Text>Sauce Selection</Text>
+          </View>
+
+          <View style={styles.modalContentBottomButtons}>
+            <Button
+              containerStyle={{padding:10, height:50, width: 200, margin: 30, overflow:'hidden', borderRadius:4, backgroundColor: 'red'}}
+              style={{fontSize: 25, color: 'white'}}
+              styleDisabled={{color: 'red'}}
+              onPress={this._setModalVisible.bind(this, false)}>
+              Cancel
+            </Button>
+
+            <Button
+              containerStyle={{padding:10, height:50, width: 200, margin: 30, overflow:'hidden', borderRadius:4, backgroundColor: 'blue'}}
+              style={{fontSize: 25, color: 'white'}}
+              styleDisabled={{color: 'red'}}
+              onPress={() => {this._addToCart()}}>
+              Add to Cart
+            </Button>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  _addToCart() {
+    console.log('_addToCart');
   }
 
   _renderScrollableTabView() {
@@ -60,6 +123,10 @@ class Menu extends Component {
       </View>
     );
   }
+
+  _setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  };
 
   _renderBottomButtons() {
     return(
@@ -109,20 +176,29 @@ class Menu extends Component {
     var price = (item.price/100).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
 
     return (
-      <View style={styles.card} key={index}>
+      <TouchableOpacity style={styles.card} key={index}
+        activeOpacity={0.9}
+        onPress={() => { this._onSelectItem(item) }}>
         <View style={styles.imageSide}>
           <Image
             source={item.image}
             style={styles.image}
           />
         </View>
+
         <View style={styles.textSide}>
           <Text style={styles.itemLabel}>{item.label}</Text>
           <Text style={styles.description}>{item.description}</Text>
           <Text style={styles.price}>${price}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     );
+  }
+
+  _onSelectItem(item) {
+    console.log('_onSelectItem');
+    console.log(item);
+    this._setModalVisible(true);
   }
 
   _onBackButtonPressed() {
@@ -139,6 +215,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
   categories: {
     flex: 10,
     borderWidth: 1,
@@ -172,6 +249,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'green'
   },
+
   card: {
     borderWidth: 1,
     backgroundColor: '#fff',
@@ -206,17 +284,39 @@ const styles = StyleSheet.create({
 
   itemLabel: {
     fontSize: 25,
-    margin: 15
+    margin: 5
   },
 
   description: {
-    fontSize: 15,
-    margin: 15
+    fontSize: 11,
+    margin: 5
   },
 
   price: {
     fontSize: 20,
-    margin: 15
+    margin: 5
+  },
+
+  modal: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  modalContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fefefe'
+  },
+
+  modalContentMain: {
+    flex: 7
+  },
+
+  modalContentBottomButtons: {
+    flex: 1,
+    flexDirection: 'row'
   }
 });
 
