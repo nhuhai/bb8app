@@ -129,20 +129,36 @@ class Menu extends Component {
           <Text style={styles.customizationCategoryHeaderText}>{category.label}</Text>
         </View>
 
-        <ScrollView
-          style={styles.customizationCategoryScrollView}
-          horizontal={true}>
-          {category.selections.map((selection, index) => {
-            return this._renderCustomizationItem(selection, index);
-          })}
-        </ScrollView>
+        <View style={styles.customizationCategoryScrollView}>
+          <ScrollView
+            horizontal={true}>
+            {category.selections.map((selection, index) => {
+              return this._renderCustomizationItem(selection, index);
+            })}
+          </ScrollView>
+        </View>
       </View>
     );
   }
 
-  _renderCustomizationItem(selection, index) {
+  _renderCustomizationItem(item, index) {
+    // var price = (item.price/100).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+
     return (
-      <Text key={index}>{selection.label}</Text>
+      <TouchableOpacity style={styles.customizationCard} key={index}
+        activeOpacity={0.9}
+        onPress={() => console.log('_onSelectCustomizationItem')}>
+        <View style={styles.customizationImage}>
+          <Image
+            source={item.image}
+            style={styles.image}
+          />
+        </View>
+
+        <View style={styles.textSide}>
+          <Text style={styles.customizationText}>{item.label}</Text>
+        </View>
+      </TouchableOpacity>
     );
   }
 
@@ -150,7 +166,7 @@ class Menu extends Component {
     return (
       <View style={styles.modalContentBottomButtons}>
         <Button
-          containerStyle={{padding:10, height:50, width: 200, margin: 30, overflow:'hidden', borderRadius:4, backgroundColor: 'red'}}
+          containerStyle={{padding:10, height:50, width: 200, margin: 15, overflow:'hidden', borderRadius:4, backgroundColor: 'lightgreen'}}
           style={{fontSize: 25, color: 'white'}}
           styleDisabled={{color: 'red'}}
           onPress={this._setModalVisible.bind(this, false)}>
@@ -158,7 +174,7 @@ class Menu extends Component {
         </Button>
 
         <Button
-          containerStyle={{padding:10, height:50, width: 200, margin: 30, overflow:'hidden', borderRadius:4, backgroundColor: 'blue'}}
+          containerStyle={{padding:10, height:50, width: 200, margin: 15, overflow:'hidden', borderRadius:4, backgroundColor: 'rgb(59,89,152)'}}
           style={{fontSize: 25, color: 'white'}}
           styleDisabled={{color: 'red'}}
           onPress={() => {this._addToCart()}}>
@@ -194,7 +210,7 @@ class Menu extends Component {
     return(
       <View style={styles.buttonsContainer}>
         <Button
-          containerStyle={{padding:10, height:50, width: 200, margin: 30, overflow:'hidden', borderRadius:4, backgroundColor: 'blue'}}
+          containerStyle={{padding:10, height:50, width: 200, margin: 30, overflow:'hidden', borderRadius:4, backgroundColor: 'rgb(59,89,152)'}}
           style={{fontSize: 25, color: 'white'}}
           styleDisabled={{color: 'red'}}
           onPress={() => this._onBackButtonPressed()}>
@@ -333,7 +349,7 @@ const styles = StyleSheet.create({
 
   image: {
     ...StyleSheet.absoluteFillObject,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     borderRadius: Platform.OS === 'ios' ? 6 : 0,
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
@@ -374,7 +390,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'flex-end'
   },
 
   modalContentMainHeader: {
@@ -389,12 +405,11 @@ const styles = StyleSheet.create({
   },
 
   modalContentMainHeaderText: {
-    fontSize: 25,
-    fontWeight: '700'
+    fontSize: 30
   },
 
   customizationCategory: {
-    height: 210
+    height: 250
   },
 
   customizationCategoryHeader: {
@@ -402,12 +417,26 @@ const styles = StyleSheet.create({
   },
 
   customizationCategoryHeaderText: {
-    fontSize: 18,
+    fontSize: 25,
     fontWeight: '600'
   },
 
   customizationCategoryScrollView: {
     flex: 6
+  },
+
+  customizationCard: {
+    width: 220,
+    height: 220
+  },
+
+  customizationImage: {
+    width: 150,
+    height: 150
+  },
+
+  customizationText: {
+    fontSize: 18
   }
 });
 

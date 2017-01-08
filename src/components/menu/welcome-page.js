@@ -32,7 +32,7 @@ class WelcomePage extends Component {
 
         <View style={styles.buttonsContainer}>
           <Button
-            containerStyle={{padding:10, height:50, width: 200, margin: 30, overflow:'hidden', borderRadius:4, backgroundColor: 'blue'}}
+            containerStyle={{padding:10, height:50, width: 200, margin: 30, overflow:'hidden', borderRadius:4, backgroundColor: 'darkorange'}}
             style={{fontSize: 25, color: 'white'}}
             styleDisabled={{color: 'red'}}
             onPress={() => this._onDineInPressed()}>
@@ -40,7 +40,7 @@ class WelcomePage extends Component {
           </Button>
 
           <Button
-            containerStyle={{padding:10, height: 50, width: 200, margin: 30, overflow:'hidden', borderRadius:4, backgroundColor: 'green'}}
+            containerStyle={{padding:10, height: 50, width: 200, margin: 30, overflow:'hidden', borderRadius:4, backgroundColor: 'midnightblue'}}
             style={{fontSize: 25, color: 'white'}}
             styleDisabled={{color: 'red'}}
             onPress={() => this._onTakeOutPressed()}>
