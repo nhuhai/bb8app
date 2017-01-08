@@ -33,7 +33,7 @@ class Menu extends Component {
       width: null,
       height: null,
       selectedItem: null,
-      selectedCategoryIndex: null
+      selectedCategoryIndex: 0
     };
   }
 
@@ -75,15 +75,13 @@ class Menu extends Component {
 
     if (item) {
       return (
-        <View
-          style={styles.modal}>
+        <View style={styles.modal}>
           <View
             width={this.state.width * 0.9}
             height={this.state.height * 0.9}
             style={styles.modalContent}>
 
             {this._renderModalContentMain(item)}
-
             {this._renderModalContentBottomButtons()}
           </View>
         </View>
@@ -99,8 +97,6 @@ class Menu extends Component {
     const selectedIndex = this.state.selectedCategoryIndex;
     const customization = dotSaigonMenu.categories[selectedIndex].customization;
 
-    console.log(customization);
-
     return (
       <View style={styles.modalContentMain}>
         <View style={styles.modalContentMainHeader}>
@@ -115,10 +111,12 @@ class Menu extends Component {
   _renderCustomizationCategories(customization) {
     if (customization) {
       return (
-        <View style={styles.modalContentMainScrollView}>
-          {customization.map((category, index) => {
-            return this._renderCustomizationCategory(category, index);
-          })}
+        <View style={styles.modalContentMainScrollViewContainer}>
+          <ScrollView>
+            {customization.map((category, index) => {
+              return this._renderCustomizationCategory(category, index);
+            })}
+          </ScrollView>
         </View>
       );
     }
@@ -126,9 +124,25 @@ class Menu extends Component {
 
   _renderCustomizationCategory(category, index) {
     return (
-      <View key={index}>
-        <Text>{category.label}</Text>
+      <View key={index} style={styles.customizationCategory}>
+        <View style={styles.customizationCategoryHeader}>
+          <Text style={styles.customizationCategoryHeaderText}>{category.label}</Text>
+        </View>
+
+        <ScrollView
+          style={styles.customizationCategoryScrollView}
+          horizontal={true}>
+          {category.selections.map((selection, index) => {
+            return this._renderCustomizationItem(selection, index);
+          })}
+        </ScrollView>
       </View>
+    );
+  }
+
+  _renderCustomizationItem(selection, index) {
+    return (
+      <Text key={index}>{selection.label}</Text>
     );
   }
 
@@ -270,23 +284,17 @@ const styles = StyleSheet.create({
   },
 
   categories: {
-    flex: 10,
-    borderWidth: 1,
-    borderColor:'red'
+    flex: 10
   },
 
   items: {
     flex: 6,
     justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'green'
+    alignItems: 'center'
   },
 
   buttonsContainer: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: 'blue'
+    flex: 1
   },
 
   row: {
@@ -298,9 +306,7 @@ const styles = StyleSheet.create({
   tabView: {
     flex: 1,
     padding: 10,
-    backgroundColor: 'rgba(0,0,0,0.01)',
-    borderWidth: 1,
-    borderColor: 'green'
+    backgroundColor: 'rgba(0,0,0,0.01)'
   },
 
   card: {
@@ -310,7 +316,6 @@ const styles = StyleSheet.create({
     margin: 20,
     height: 280,
     width: 600,
-    // padding: 15,
     shadowColor: '#ccc',
     shadowOffset: { width: 2, height: 2, },
     shadowOpacity: 0.5,
@@ -358,8 +363,6 @@ const styles = StyleSheet.create({
   },
 
   modalContent: {
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#fefefe'
   },
 
@@ -369,7 +372,9 @@ const styles = StyleSheet.create({
 
   modalContentBottomButtons: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 
   modalContentMainHeader: {
@@ -378,12 +383,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
 
-  modalContentMainScrollView: {
-    flex: 6
+  modalContentMainScrollViewContainer: {
+    flex: 6,
+    padding: 40
   },
 
   modalContentMainHeaderText: {
-    fontSize: 25
+    fontSize: 25,
+    fontWeight: '700'
+  },
+
+  customizationCategory: {
+    height: 210
+  },
+
+  customizationCategoryHeader: {
+    flex: 1
+  },
+
+  customizationCategoryHeaderText: {
+    fontSize: 18,
+    fontWeight: '600'
+  },
+
+  customizationCategoryScrollView: {
+    flex: 6
   }
 });
 
